@@ -86,7 +86,7 @@ namespace CityInfo.API.Controllers
                 userName ?? "",
                 "Wilbert",
                 "Holkema",
-                "Sassenheim");
+                "Antwerp");
         }
 
     }

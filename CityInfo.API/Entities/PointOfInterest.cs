@@ -24,6 +24,7 @@ namespace CityInfo.API.Entities
         public PointOfInterest(string name)
         {
             Name = name;
+            Description = string.Empty;
         }
     }
 }

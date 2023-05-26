@@ -4,6 +4,7 @@ using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using System.Text;
@@ -27,6 +28,7 @@ builder.Services.AddControllers(options =>
 
 // Learn more about configuring Swagger/OpenAPI at
 // https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setupAction =>
 {
@@ -34,6 +36,25 @@ builder.Services.AddSwaggerGen(setupAction =>
     var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
     setupAction.IncludeXmlComments(xmlCommentsFullPath);
+
+    setupAction.AddSecurityDefinition("CityInfoApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Input a valid token to access this API"
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="CityInfoApiBearerAuth" }
+            }, new List<string>() }
+    });
 });
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
@@ -109,3 +130,24 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
+
+//Next possible courses from Kevin Dockx (PluralSight):
+
+//Building a RESTful API with ASP.NET Core 3
+//Implementing Advanced RESTful Concerns with ASP.NET Core 3
+
+//Building an Async API with ASP.NET Core
+//Documenting an ASP.NET Core API with Swagger / OpenAPI
+//Securing ASP.NET Core 3 with OAuth2 and OpenID Connect
+
+//Recommended Authors:
+
+//Julie Lerman
+//Entity Framework Core
+
+//Gill Cleeeren
+//ASP.NET MVC / Architecture
+
+//Shawn Wildermuth en Deborah Kurata
+//Frontend, interact with an API
